@@ -1,6 +1,7 @@
-FROM telegrammessenger/proxy:latest
+FROM alpine:latest
 
-# Этот образ сам генерирует секрет и выводит ссылку.
-# Ему не нужен entrypoint.sh, просто запускаем.
-# Render назначит порт автоматически.
-CMD []
+# Устанавливаем curl для проверки
+RUN apk add --no-cache curl
+
+# Просто выводим приветствие и запускаем бесконечный цикл, чтобы сервис не завершался
+CMD echo "MTProto Proxy Test" && tail -f /dev/null
