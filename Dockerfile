@@ -1,5 +1,8 @@
 FROM telegrammessenger/proxy:latest
 
+# Устанавливаем xxd и другие полезные утилиты
+RUN apt-get update && apt-get install -y xxd && rm -rf /var/lib/apt/lists/*
+
 # Создаем рабочий каталог
 WORKDIR /app
 
