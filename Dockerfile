@@ -1,7 +1,13 @@
-FROM telegrammessenger/proxy
+FROM telegrammessenger/proxy:latest
 
-# Генерируем секрет при запуске
-ENV SECRET=$(head -c 16 /dev/urandom | od -A n -t x1 | tr -d ' \n')
+# Устанавливаем необходимые утилиты
+RUN apt-get update && apt-get install -y xxd && rm -rf /var/lib/apt/lists/*
 
-# Запускаем прокси
-CMD /usr/bin/mtproto-proxy -p 8080 -s "$SECRET" -c 10000
+WORKDIR /app
+
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
+ENV PORT=8080
+
+CMD ["/app/entrypoint.sh"]
