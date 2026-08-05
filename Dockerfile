@@ -1,20 +1,12 @@
-FROM ubuntu:22.04
+FROM serjs/telegram-mtproto-proxy:latest
 
-# Переключаемся на root для установки пакетов
-USER root
+ENV PORT=8080
 
-# Устанавливаем необходимые утилиты
-RUN apt-get update && \
-    apt-get install -y wget xxd curl && \
-    rm -rf /var/lib/apt/lists/*
-
-# Скачиваем бинарник mtproto-proxy
-RUN wget -O /mtproto-proxy https://github.com/TelegramMessenger/MTProxy/raw/master/mtproto-proxy && \
-    chmod +x /mtproto-proxy
-
-# Генерируем секрет и запускаем
 CMD SECRET=$(head -c 16 /dev/urandom | xxd -ps) && \
     echo "=========================================" && \
     echo "Сгенерирован SECRET: $SECRET" && \
     echo "=========================================" && \
-    exec /mtproto-proxy -p 8080 -s $SECRET -c 10000
+    echo "Ваша ссылка для подключения:" && \
+    echo "tg://proxy?server=ВАШ_АДРЕС.render.com&port=443&secret=$SECRET" && \
+    echo "=========================================" && \
+    exec /usr/local/bin/mtproto-proxy -p 8080 -s $SECRET -c 10000
