@@ -11,12 +11,11 @@ if [ -z "$SECRET" ]; then
     echo "========================================="
 fi
 
-# Запускаем прокси
-# Проверяем, есть ли mtproto-proxy в текущей директории
-if [ -f "./mtproto-proxy" ]; then
-    echo "Запускаем mtproto-proxy..."
-    exec ./mtproto-proxy -p 8080 -s "$SECRET" -c 10000
-else
-    # Если бинарник не найден, пробуем запустить из системного пути
-    exec mtproto-proxy -p 8080 -s "$SECRET" -c 10000
-fi
+# Запускаем прокси с правильными параметрами
+# Вместо -s используем --secret
+# Вместо -p используем --port
+exec ./mtproto-proxy \
+    --port=8080 \
+    --secret="$SECRET" \
+    --workers=4 \
+    --max-connections=10000
