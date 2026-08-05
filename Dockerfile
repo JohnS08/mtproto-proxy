@@ -1,11 +1,7 @@
-FROM alpine:latest
+FROM telegrammessenger/proxy
 
-RUN apk add --no-cache mtproto-proxy
+# Генерируем секрет при запуске
+ENV SECRET=$(head -c 16 /dev/urandom | od -A n -t x1 | tr -d ' \n')
 
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-
-ENV PORT=8080
-ENV SECRET=
-
-CMD ["/entrypoint.sh"]
+# Запускаем прокси
+CMD /usr/bin/mtproto-proxy -p 8080 -s "$SECRET" -c 10000
