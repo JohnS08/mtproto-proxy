@@ -1,7 +1,6 @@
-FROM alpine:latest
+FROM telegrammessenger/proxy:latest
 
-# Устанавливаем curl для проверки
-RUN apk add --no-cache curl
+# Явно указываем порт
+EXPOSE 443
 
-# Просто выводим приветствие и запускаем бесконечный цикл, чтобы сервис не завершался
-CMD echo "MTProto Proxy Test" && tail -f /dev/null
+# Без дополнительных команд, образ сам все запустит
